@@ -12,7 +12,8 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
  * Description:  Acorn must be booted in order to use it. This plugin handles Acorn booting.
  * Version:      1.0.0
  * Author:       Mantas Tautvaisa
- * License:      MIT License
+ * License:      GPLv2 or later
+ * License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  */
 if (! function_exists('\Roots\bootloader')) {
     wp_die(
