@@ -1,31 +1,8 @@
-# Acorn Example Package
+# Acorn Bootloader Package
 
-This repo can be used to scaffold an Acorn package. See the [Acorn Package Development](https://roots.io/acorn/docs/package-development/) docs for further information.
+For acorn ^v4.0
+Acorn bootloader adds csrf protection to your application routes.
+It is a middleware that checks for csrf token in the request header and compares it with the csrf token stored in the session. 
+If the tokens match, the request is allowed to proceed. If the tokens do not match, the request is blocked and an error message is returned.
 
-## Installation
-
-You can install this package with Composer:
-
-```bash
-composer require vendor-name/example-package
-```
-
-You can publish the config file with:
-
-```shell
-$ wp acorn vendor:publish --provider="VendorName\ExamplePackage\Providers\ExampleServiceProvider"
-```
-
-## Usage
-
-From a Blade template:
-
-```blade
-@include('Example::example')
-```
-
-From WP-CLI:
-
-```shell
-$ wp acorn example
-```
+Wrap everything in web middleware to enable csrf protection for all routes.
