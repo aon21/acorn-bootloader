@@ -1,6 +1,6 @@
 {
   "name": "aon21/acorn-bootloader",
-  "type": "package",
+  "type": "wordpress-muplugin",
   "description": "Bootloader package for Roots Acorn.",
   "license": "MIT",
   "authors": [
