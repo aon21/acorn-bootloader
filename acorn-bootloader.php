@@ -1,11 +1,4 @@
 <?php
-
-use Roots\Acorn\Application;
-use Sentry\Laravel\Integration;
-use Roots\Acorn\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
-
 /**
  * Plugin Name:  Acorn Bootloader
  * Plugin URI:   https://gitlab.com/aon21/acorn-bootloader
@@ -15,6 +8,9 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
  * License:      GPLv2 or later
  * License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+
 if (! function_exists('\Roots\bootloader')) {
     wp_die(
         __('You need to install Acorn to use this site.', 'domain'),
@@ -26,23 +22,7 @@ if (! function_exists('\Roots\bootloader')) {
     );
 }
 
-function acorn_bootloader(): void
-{
-    $app_builder = Application::configure();
-    $app_builder->withExceptions(function (Exceptions $exceptions) {
-        Integration::handles($exceptions);
-    });
-    $app_builder->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [
-            ValidateCsrfToken::class,
-        ]);
-    });
-    $app_builder->boot();
-}
-
-add_action('after_setup_theme', 'acorn_bootloader');
-
-function acorn_bootloader_start_session(): void
+function startSession(): void
 {
     $session = app('session');
 
@@ -54,15 +34,17 @@ function acorn_bootloader_start_session(): void
     }
 }
 
-add_action('init', 'acorn_bootloader_start_session');
+add_action('init', function() {
 
-function acorn_bootloader_save_session(): void
-{
+    startSession();
+
+    app('router')->pushMiddlewareToGroup('web', VerifyCsrfToken::class);
+});
+
+add_action('shutdown', function() {
     $session = app('session');
 
     if ($session->isStarted()) {
         $session->save();
     }
-}
-
-add_action('shutdown', 'acorn_bootloader_save_session');
+});
