@@ -32,6 +32,19 @@ function startSession(): void
         }
         $session->start();
     }
+
+    session()->put('_persistent', 'true');
+    session()->save();
+
+    setcookie(
+        $session->getName(),
+        $session->getId(),
+        time() + (120 * 60),
+        "/",
+        "",
+        isset($_SERVER['HTTPS']),
+        true
+    );
 }
 
 add_action('init', function() {
